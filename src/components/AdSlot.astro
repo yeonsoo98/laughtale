@@ -1,0 +1,26 @@
+---
+// Google AdSense 광고 슬롯.
+// PUBLIC_ADSENSE_CLIENT 환경변수가 없으면 아무것도 렌더링하지 않는다.
+// 글당 1~2개만 사용할 것 (사용자 경험 우선).
+interface Props {
+  slot?: string;
+}
+const { slot = '' } = Astro.props;
+const client = import.meta.env.PUBLIC_ADSENSE_CLIENT;
+---
+
+{
+  client && (
+    <div class="my-8" aria-hidden="true">
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client={client}
+        data-ad-slot={slot}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+      <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  )
+}

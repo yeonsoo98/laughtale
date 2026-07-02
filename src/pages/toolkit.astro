@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// 상품이 준비되면 여기에 추가한다. 결제는 Gumroad/Lemon Squeezy 외부 링크로 처리
+// (정적 사이트라 백엔드 불필요). buyUrl 이 비어 있으면 "준비 중" 으로 표시된다.
+const products = [
+  {
+    name: '20년 자산 여정 트래커 — 광교 빌딩 도전 템플릿',
+    description:
+      '목표 금액이 아니라 목표까지의 "항해"를 관리하는 도구. 세 개의 통장을 나누고, 목표 달성 나이를 자동 계산하고, 건물이 한 층씩 차오르는 걸 지켜보세요.',
+    price: '준비 중',
+    buyUrl: '',
+    badge: '노션 템플릿',
+  },
+];
+---
+
+<BaseLayout
+  title="툴킷"
+  description="자산 항해에 쓰는 도구들 — 자산 여정 트래커 템플릿과 체크리스트."
+>
+  <h1 class="font-display mb-3 text-3xl font-semibold">툴킷</h1>
+  <p class="text-muted mb-10 max-w-2xl leading-relaxed">
+    제가 항해에 직접 쓰는 도구들을 다듬어 공유합니다. 스프레드시트의 숫자가 아니라
+    "건물에 불이 켜지는 것"으로 동기를 관리하는 도구들입니다.
+  </p>
+
+  <div class="grid gap-5">
+    {
+      products.map((p) => (
+        <article class="border-mist bg-slate rounded-lg border p-6 sm:p-8">
+          <span class="text-sage border-sage/40 rounded-full border px-2.5 py-0.5 text-xs font-semibold">
+            {p.badge}
+          </span>
+          <h2 class="font-display mt-3 text-xl font-semibold">{p.name}</h2>
+          <p class="text-muted mt-2 leading-relaxed">{p.description}</p>
+          <div class="mt-5 flex items-center gap-4">
+            <span class="font-mono text-lg font-bold text-brass">{p.price}</span>
+            {p.buyUrl ? (
+              <a
+                href={p.buyUrl}
+                rel="sponsored nofollow noopener"
+                target="_blank"
+                class="bg-brass text-ink hover:bg-brass-lt rounded px-5 py-2.5 text-sm font-bold transition-colors"
+              >
+                구매하기
+              </a>
+            ) : (
+              <span class="border-mist text-muted rounded border px-5 py-2.5 text-sm">
+                출시 준비 중 — 뉴스레터로 소식을 받아보세요
+              </span>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <p class="text-muted mt-8 text-sm">
+    결제와 전달은 외부 플랫폼(Gumroad 등)에서 처리됩니다. 환불 정책은 각 상품 페이지를
+    따릅니다.
+  </p>
+</BaseLayout>

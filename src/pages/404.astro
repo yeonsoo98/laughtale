@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="페이지를 찾을 수 없음" description="요청하신 페이지가 없습니다.">
+  <div class="py-20 text-center">
+    <p class="font-mono text-brass text-6xl font-bold">404</p>
+    <h1 class="font-display mt-4 text-2xl font-semibold">이 항로에는 섬이 없습니다</h1>
+    <p class="text-muted mt-3">주소가 바뀌었거나, 아직 쓰이지 않은 페이지입니다.</p>
+    <a
+      href="/"
+      class="bg-brass text-ink hover:bg-brass-lt mt-8 inline-block rounded px-6 py-3 text-sm font-bold transition-colors"
+    >
+      홈으로 돌아가기
+    </a>
+  </div>
+</BaseLayout>

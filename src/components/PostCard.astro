@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+const { post } = Astro.props;
+const { title, description, pubDate, category } = post.data;
+---
+
+<article
+  class="border-mist bg-slate hover:border-brass/60 group rounded-lg border p-5 transition-colors sm:p-6"
+>
+  <div class="text-muted mb-2 flex items-center gap-3 text-sm">
+    <span class="text-sage border-sage/40 rounded-full border px-2.5 py-0.5 text-xs font-semibold">
+      {category}
+    </span>
+    <FormattedDate date={pubDate} />
+  </div>
+  <h3 class="font-display text-lg font-semibold">
+    <a href={`/blog/${post.id}/`} class="group-hover:text-brass-lt transition-colors">
+      <span class="absolute inset-0" aria-hidden="true"></span>
+      {title}
+    </a>
+  </h3>
+  <p class="text-muted mt-1.5 line-clamp-2 text-[0.95rem] leading-relaxed">{description}</p>
+</article>
+
+<style>
+  article {
+    position: relative;
+  }
+</style>

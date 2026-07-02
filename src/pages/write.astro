@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WriteStudio from '../react/WriteStudio';
+---
+
+<BaseLayout title="글쓰기" description="laughtale 글쓰기 스튜디오 — 브라우저에서 마크다운으로 글을 쓰고 발행용 파일로 내보냅니다.">
+  <h1 class="font-display mb-2 text-3xl font-semibold">글쓰기 스튜디오</h1>
+  <p class="text-muted mb-8 text-sm leading-relaxed">
+    브라우저에서 바로 글을 쓰는 공간입니다. 초안은 이 브라우저에 자동 저장되고, 완성되면
+    .md 파일로 내려받아 <code class="text-cream">src/content/blog/</code> 에 넣으면 발행됩니다.
+  </p>
+  <WriteStudio client:load />
+</BaseLayout>

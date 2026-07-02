@@ -1,0 +1,14 @@
+---
+interface Props {
+  date: Date;
+}
+const { date } = Astro.props;
+const iso = date.toISOString().slice(0, 10);
+const label = date.toLocaleDateString('ko-KR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<time datetime={iso} class="font-mono text-sm">{label}</time>

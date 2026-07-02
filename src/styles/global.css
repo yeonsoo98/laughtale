@@ -1,0 +1,178 @@
+@import 'tailwindcss';
+
+/* ── laughtale 디자인 토큰 ─────────────────────────────
+   콘셉트: "느긋한 자본(patient capital)"
+   다크(박명 twilight)가 기본, [data-theme="light"] 로 라이트 모드 */
+:root {
+  --ink: #14201f; /* 배경 베이스 */
+  --slate: #1b2a28; /* 카드/서피스 */
+  --mist: #2c403d; /* 보더/구분선 */
+  --brass: #d2a24c; /* 주 포인트 (가치·성취) */
+  --brass-lt: #e7b65f; /* 밝은 포인트/강조 */
+  --sage: #7fb09a; /* 성장·금융 계열 */
+  --cream: #eae6db; /* 본문 텍스트 */
+  --muted: #8fa39d; /* 보조 텍스트 */
+}
+
+[data-theme='light'] {
+  --ink: #f4f1e8;
+  --slate: #ffffff;
+  --mist: #d8d2c2;
+  --brass: #a97c2a;
+  --brass-lt: #8a6420;
+  --sage: #3e7a60;
+  --cream: #24302e;
+  --muted: #5d6f6a;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-slate: var(--slate);
+  --color-mist: var(--mist);
+  --color-brass: var(--brass);
+  --color-brass-lt: var(--brass-lt);
+  --color-sage: var(--sage);
+  --color-cream: var(--cream);
+  --color-muted: var(--muted);
+
+  --font-display: 'Fraunces', 'Pretendard', serif;
+  --font-sans: 'Pretendard', -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Pretendard', monospace;
+}
+
+html {
+  background-color: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+/* 키보드 포커스 (접근성) */
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--brass);
+  color: var(--ink);
+}
+
+/* ── 글 본문 (마크다운) ──────────────────────────── */
+.prose {
+  max-width: 72ch;
+  line-height: 1.85;
+  font-size: 1.0625rem;
+}
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--font-display);
+  color: var(--cream);
+  margin-top: 2.25em;
+  margin-bottom: 0.7em;
+  line-height: 1.35;
+  scroll-margin-top: 5rem;
+}
+.prose h2 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid var(--mist);
+  padding-bottom: 0.4em;
+}
+.prose h3 {
+  font-size: 1.25rem;
+}
+.prose p,
+.prose ul,
+.prose ol {
+  margin-bottom: 1.15em;
+}
+.prose ul {
+  list-style: disc;
+  padding-left: 1.4em;
+}
+.prose ol {
+  list-style: decimal;
+  padding-left: 1.4em;
+}
+.prose li {
+  margin-bottom: 0.35em;
+}
+.prose a {
+  color: var(--brass);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose a:hover {
+  color: var(--brass-lt);
+}
+.prose strong {
+  color: var(--cream);
+  font-weight: 700;
+}
+.prose blockquote {
+  border-left: 3px solid var(--brass);
+  padding-left: 1.1em;
+  color: var(--muted);
+  font-style: italic;
+  margin: 1.5em 0;
+}
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--mist);
+  margin: 2.5em 0;
+}
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--slate);
+  border: 1px solid var(--mist);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+}
+.prose pre {
+  border: 1px solid var(--mist);
+  border-radius: 8px;
+  padding: 1.1em 1.25em;
+  overflow-x: auto;
+  margin: 1.5em 0;
+  font-size: 0.9rem;
+}
+.prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+.prose img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 1.5em 0;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.95rem;
+  display: block;
+  overflow-x: auto;
+}
+.prose th,
+.prose td {
+  border: 1px solid var(--mist);
+  padding: 0.5em 0.85em;
+  text-align: left;
+}
+.prose th {
+  background: var(--slate);
+  font-weight: 600;
+}

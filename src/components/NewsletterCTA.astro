@@ -1,0 +1,55 @@
+---
+import { CONTACT_EMAIL } from '../consts';
+
+// PUBLIC_NEWSLETTER_ACTION 에 스티비/Buttondown 등의 폼 action URL 을 넣으면
+// 실제 구독 폼으로 동작한다. 없으면 mailto 폴백.
+const action = import.meta.env.PUBLIC_NEWSLETTER_ACTION;
+
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+
+<section
+  class:list={[
+    'border-mist bg-slate rounded-lg border',
+    compact ? 'p-5' : 'p-6 sm:p-8',
+  ]}
+  aria-label="뉴스레터 구독"
+>
+  <h2 class="font-display text-brass text-lg font-semibold">월간 결산을 이메일로 받기</h2>
+  <p class="text-muted mt-1.5 text-[0.95rem]">
+    한 달에 한 번, 항해 일지를 보냅니다. 진행률과 그달의 배움, 딱 그만큼만.
+  </p>
+  {
+    action ? (
+      <form method="post" action={action} target="_blank" class="mt-4 flex flex-col gap-2 sm:flex-row">
+        <label class="sr-only" for={`nl-email-${compact ? 'c' : 'f'}`}>
+          이메일 주소
+        </label>
+        <input
+          id={`nl-email-${compact ? 'c' : 'f'}`}
+          type="email"
+          name="email"
+          required
+          placeholder="you@example.com"
+          class="border-mist bg-ink text-cream placeholder:text-muted/70 flex-1 rounded border px-3.5 py-2.5 text-sm"
+        />
+        <button
+          type="submit"
+          class="bg-brass text-ink hover:bg-brass-lt rounded px-5 py-2.5 text-sm font-bold transition-colors"
+        >
+          구독하기
+        </button>
+      </form>
+    ) : (
+      <a
+        href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('laughtale 뉴스레터 구독 신청')}`}
+        class="bg-brass text-ink hover:bg-brass-lt mt-4 inline-block rounded px-5 py-2.5 text-sm font-bold transition-colors"
+      >
+        이메일로 구독 신청
+      </a>
+    )
+  }
+</section>

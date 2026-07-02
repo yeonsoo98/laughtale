@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { CATEGORIES } from '../../content.config';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const counts = Object.fromEntries(
+  CATEGORIES.map((c) => [c, posts.filter((p) => p.data.category === c).length])
+);
+---
+
+<BaseLayout title="블로그" description="월간 결산, 주식·자산 공부, 좋은 글 — laughtale 의 모든 항해 기록.">
+  <h1 class="font-display mb-2 text-3xl font-semibold">항해 기록</h1>
+  <p class="text-muted mb-8">
+    총 <span class="font-mono text-cream">{posts.length}</span>편의 글
+  </p>
+
+  <!-- 카테고리 필터 -->
+  <nav aria-label="카테고리 필터" class="mb-8 flex flex-wrap gap-2">
+    <button
+      type="button"
+      data-filter="all"
+      class="filter-btn bg-brass text-ink rounded-full px-4 py-1.5 text-sm font-semibold transition-colors"
+      aria-pressed="true"
+    >
+      전체
+    </button>
+    {
+      CATEGORIES.map((cat) => (
+        <button
+          type="button"
+          data-filter={cat}
+          class="filter-btn border-mist text-muted hover:text-cream rounded-full border px-4 py-1.5 text-sm transition-colors"
+          aria-pressed="false"
+        >
+          {cat} <span class="font-mono text-xs opacity-70">{counts[cat]}</span>
+        </button>
+      ))
+    }
+  </nav>
+
+  <div id="post-list" class="grid gap-4">
+    {
+      posts.map((post) => (
+        <div data-category={post.data.category}>
+          <PostCard post={post} />
+        </div>
+      ))
+    }
+  </div>
+  <p id="empty-msg" class="text-muted hidden py-10 text-center">이 카테고리에는 아직 글이 없습니다.</p>
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const items = document.querySelectorAll<HTMLElement>('#post-list > [data-category]');
+  const emptyMsg = document.getElementById('empty-msg');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      buttons.forEach((b) => {
+        const active = b === btn;
+        b.setAttribute('aria-pressed', String(active));
+        b.classList.toggle('bg-brass', active);
+        b.classList.toggle('text-ink', active);
+        b.classList.toggle('font-semibold', active);
+        b.classList.toggle('border', !active);
+        b.classList.toggle('border-mist', !active);
+        b.classList.toggle('text-muted', !active);
+      });
+      let visible = 0;
+      items.forEach((el) => {
+        const show = filter === 'all' || el.dataset.category === filter;
+        el.classList.toggle('hidden', !show);
+        if (show) visible++;
+      });
+      emptyMsg?.classList.toggle('hidden', visible > 0);
+    });
+  });
+</script>

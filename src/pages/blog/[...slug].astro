@@ -1,0 +1,122 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import NewsletterCTA from '../../components/NewsletterCTA.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { AUTHOR } from '../../consts';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+  );
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, prev: posts[i - 1] ?? null, next: posts[i + 1] ?? null },
+  }));
+}
+
+const { post, prev, next } = Astro.props;
+const { title, description, pubDate, updatedDate, category, tags } = post.data;
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="article"
+  article={{ pubDate, updatedDate, tags }}
+>
+  <article>
+    <header class="border-mist mb-9 border-b pb-7">
+      <div class="text-muted mb-3 flex flex-wrap items-center gap-3 text-sm">
+        <a
+          href="/blog"
+          class="text-sage border-sage/40 hover:border-sage rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors"
+        >
+          {category}
+        </a>
+        <FormattedDate date={pubDate} />
+        {
+          updatedDate && (
+            <span class="text-xs">
+              (수정: <FormattedDate date={updatedDate} />)
+            </span>
+          )
+        }
+      </div>
+      <h1 class="font-display text-3xl leading-snug font-semibold sm:text-4xl">{title}</h1>
+      <p class="text-muted mt-3 leading-relaxed">{description}</p>
+      <p class="text-muted mt-3 text-sm">
+        글쓴이: <a href="/about" class="text-brass underline underline-offset-4">{AUTHOR}</a>
+      </p>
+      {
+        tags.length > 0 && (
+          <div class="mt-4 flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <span class="text-muted bg-slate border-mist rounded border px-2 py-0.5 font-mono text-xs">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )
+      }
+    </header>
+
+    {
+      toc.length >= 3 && (
+        <nav aria-label="목차" class="border-mist bg-slate mb-9 rounded-lg border p-5">
+          <h2 class="text-brass mb-2.5 text-sm font-bold">목차</h2>
+          <ul class="space-y-1.5 text-sm">
+            {toc.map((h) => (
+              <li class={h.depth === 3 ? 'pl-4' : ''}>
+                <a href={`#${h.slug}`} class="text-muted hover:text-cream transition-colors">
+                  {h.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <AdSlot />
+
+    <!-- 이전/다음 글 -->
+    <nav aria-label="이전/다음 글" class="border-mist mt-12 grid gap-3 border-t pt-8 sm:grid-cols-2">
+      {
+        prev ? (
+          <a
+            href={`/blog/${prev.id}/`}
+            class="border-mist bg-slate hover:border-brass/60 rounded-lg border p-4 transition-colors"
+          >
+            <span class="text-muted text-xs">← 이전 글</span>
+            <span class="text-cream mt-1 block text-sm font-semibold">{prev.data.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        next && (
+          <a
+            href={`/blog/${next.id}/`}
+            class="border-mist bg-slate hover:border-brass/60 rounded-lg border p-4 text-right transition-colors"
+          >
+            <span class="text-muted text-xs">다음 글 →</span>
+            <span class="text-cream mt-1 block text-sm font-semibold">{next.data.title}</span>
+          </a>
+        )
+      }
+    </nav>
+
+    <div class="mt-10">
+      <NewsletterCTA compact />
+    </div>
+  </article>
+</BaseLayout>

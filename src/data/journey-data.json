@@ -1,0 +1,15 @@
+{
+  "updatedAt": "2026-07-01",
+  "startAge": 29,
+  "goalAge": 50,
+  "currentAge": 29,
+  "monthsElapsed": 3,
+  "contributionCount": 3,
+  "buildingProgressPct": 3.5,
+  "expectedGoalAge": 50,
+  "buckets": [
+    { "label": "금융자산", "progressPct": 5 },
+    { "label": "아파트", "progressPct": 2 },
+    { "label": "빌딩 종잣돈", "progressPct": 1 }
+  ]
+}
