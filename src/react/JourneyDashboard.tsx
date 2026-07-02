@@ -25,7 +25,6 @@ function Stat({ label, value, unit }: { label: string; value: string | number; u
 
 export default function JourneyDashboard({ compact = false }: Props) {
   const p = journey.buildingProgressPct;
-  const litFloors = Math.floor(Math.min(p, 100) / 20);
 
   return (
     <section
@@ -34,7 +33,7 @@ export default function JourneyDashboard({ compact = false }: Props) {
     >
       <header className="mb-5 flex items-baseline justify-between gap-3">
         <h2 className="font-display text-lg font-semibold text-brass">
-          광교 빌딩 항해 일지
+          꼬마빌딩 항해 일지
         </h2>
         <p className="font-mono text-xs text-muted">
           {journey.updatedAt} 기준 · {journey.monthsElapsed}개월차
@@ -44,9 +43,6 @@ export default function JourneyDashboard({ compact = false }: Props) {
       <div className={compact ? 'flex flex-col items-center gap-6 sm:flex-row' : 'flex flex-col items-center gap-8 md:flex-row'}>
         <div className="w-44 shrink-0 sm:w-52">
           <BuildingVisual progressPct={p} className="w-full" />
-          <p className="mt-2 text-center font-mono text-xs text-muted">
-            {litFloors}/5층 점등
-          </p>
         </div>
 
         <div className="w-full flex-1">
